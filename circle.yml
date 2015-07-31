@@ -1,6 +1,4 @@
 machine:
-  pre:
-    - sudo sed -i 's/^limit/#limit/g' /etc/init/docker.conf
   services:
     - docker
 
