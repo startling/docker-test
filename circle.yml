@@ -12,7 +12,7 @@ test:
     - ( sudo lxc-attach -n n1 -- echo hello ) | grep hello
 
     # Testing docker works
-    - sudo service docker start
+    - sudo service docker start || echo "maybe it's already running"
     - docker version
     - docker info
     - docker pull learn/tutorial
