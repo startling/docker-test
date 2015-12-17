@@ -1,6 +1,8 @@
 machine:
   pre:
-   - sudo sed -i 's/^limit/#limit/g' /etc/init/docker.conf
+    - echo 'DOCKER_OPTS="-s btrfs -e lxc -D --userland-proxy=false"' | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.8.2-circleci-cp-workaround'
+    - sudo chmod 0755 /usr/bin/docker
   services:
     - docker
 
@@ -23,3 +25,9 @@ test:
     - mkdir /tmp/a
     - docker run -v /tmp/a:/tmp/a busybox /bin/sh -c 'echo hihi; echo asdf > /tmp/a/b; cat /tmp/a/b'
     - grep asdf /tmp/a/b
+
+    # Testing cp.
+    - docker run --name=docker-cp -id learn/tutorial /bin/bash
+    - "docker cp docker-cp:/etc/hosts ."
+    - touch x
+    - "docker cp x docker-cp:x"
