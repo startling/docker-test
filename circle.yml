@@ -1,6 +1,8 @@
 machine:
   pre:
-   - sudo sed -i 's/^limit/#limit/g' /etc/init/docker.conf
+    - sudo rm $(which docker) || echo no docker installed
+    - sudo apt-get update
+    - sudo apt-get install -y docker-engine
   services:
     - docker
 
